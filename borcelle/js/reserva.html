@@ -1,0 +1,224 @@
+<?php
+include_once('config.php');
+// Define variáveis para armazenar mensagens de erro e de sucesso
+$errors = [];
+$success_message = '';
+
+// Inicializa variáveis para preencher o formulário (manter dados após erro)
+$nome = '';
+$email = '';
+$dataNascimento = '';
+$cpf = '';
+$telefone = '';
+$celular = '';
+$endereco = '';
+
+// --- Lógica de Processamento do Formulário ---
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // 1. Obter e Sanitizar os Dados do Formulário
+    $nome             = trim($_POST['name'] ?? '');
+    $email            = trim($_POST['email'] ?? '');
+    $dataNascimento   = trim($_POST['dataNascimento'] ?? '');
+    $cpf              = trim($_POST['cpf'] ?? '');
+    $telefone         = trim($_POST['phone'] ?? '');
+    $celular          = trim($_POST['celular'] ?? '');
+    $endereco         = trim($_POST['endereco'] ?? '');
+    $password         = $_POST['password'] ?? '';
+    $confirmPassword  = $_POST['confirm-password'] ?? '';
+
+    // 2. Validação dos Dados
+    if (empty($nome)) {
+        $errors['name'] = "O campo Nome Completo é obrigatório.";
+    }
+    if (empty($email)) {
+        $errors['email'] = "O campo E-mail é obrigatório.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "O E-mail fornecido não é válido.";
+    }
+    if (empty($dataNascimento)) {
+        $errors['dataNascimento'] = "O campo Data de Nascimento é obrigatório.";
+    }
+    if (empty($cpf)) {
+        $errors['cpf'] = "O campo CPF é obrigatório.";
+    }
+    if (empty($telefone)) {
+        $errors['phone'] = "O campo Telefone é obrigatório.";
+    }
+    if (empty($endereco)) {
+        $errors['endereco'] = "O campo Endereço Completo é obrigatório.";
+    }
+    if (empty($password)) {
+        $errors['password'] = "O campo Senha é obrigatório.";
+    } elseif (strlen($password) < 6) {
+        $errors['password'] = "A senha deve ter pelo menos 6 caracteres.";
+    } elseif ($password !== $confirmPassword) {
+        $errors['confirm-password'] = "As senhas não coincidem.";
+    }
+
+    // 3. Processamento Final (Apenas se não houver erros)
+    if (empty($errors)) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Simulação de inserção no banco de dados
+        $success_message = "🥳 Conta criada com sucesso! (Simulação de registro).";
+        // Limpa as variáveis após sucesso
+        $nome = $email = $dataNascimento = $cpf = $telefone = $celular = $endereco = '';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <style>
+        /* Estilos básicos para o formulário */
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .auth-form { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .form-actions { margin-top: 20px; }
+        .btn-primary { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; position: relative; overflow: hidden; }
+        .full-width { grid-column: 1 / -1; } /* Faz o campo ocupar as duas colunas */
+        .error-message { color: red; font-size: 0.9em; margin-top: 5px; }
+        .success-message { color: green; font-weight: bold; margin-bottom: 15px; text-align: center; border: 1px solid green; padding: 10px; border-radius: 4px; background-color: #e6ffe6; }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 0.9em; }
+        .auth-link { color: #007bff; text-decoration: none; font-weight: bold; }
+        /* Estilo para a indicação de erro no input */
+        .form-group.error .form-input { border-color: red; }
+    </style>
+</head>
+<body>
+
+    <?php if ($success_message): ?>
+        <p class="success-message"><?php echo htmlspecialchars($success_message); ?></p>
+    <?php endif; ?>
+
+    <?php if (isset($errors['db']) || isset($errors['db_insert'])): ?>
+        <p class="error-message full-width">❌ Erro no processamento: <?php echo htmlspecialchars($errors['db'] ?? $errors['db_insert']); ?></p>
+    <?php endif; ?>
+
+    <form class="auth-form" method="POST" novalidate>
+        <div class="form-grid">
+
+            <div class="form-group <?php echo isset($errors['name']) ? 'error' : ''; ?>">
+                <label for="name" class="form-label">
+                    <span class="label-icon">👤</span>
+                    Nome Completo
+                </label>
+                <input type="text" id="name" name="name" required class="form-input" 
+                       value="<?php echo htmlspecialchars($nome); ?>">
+                <?php if (isset($errors['name'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['name']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group <?php echo isset($errors['email']) ? 'error' : ''; ?>">
+                <label for="email" class="form-label">
+                    <span class="label-icon">📧</span>
+                    E-mail
+                </label>
+                <input type="email" id="email" name="email" required class="form-input"
+                       value="<?php echo htmlspecialchars($email); ?>">
+                <?php if (isset($errors['email'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['email']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group <?php echo isset($errors['dataNascimento']) ? 'error' : ''; ?>">
+                <label for="dataNascimento" class="form-label">
+                    <span class="label-icon">📅</span>
+                    Data de Nascimento
+                </label>
+                <input type="date" id="dataNascimento" name="dataNascimento" required class="form-input"
+                       value="<?php echo htmlspecialchars($dataNascimento); ?>">
+                <?php if (isset($errors['dataNascimento'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['dataNascimento']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group <?php echo isset($errors['cpf']) ? 'error' : ''; ?>">
+                <label for="cpf" class="form-label">
+                    <span class="label-icon">🔐</span>
+                    CPF
+                </label>
+                <input type="text" id="cpf" name="cpf" required class="form-input"
+                       value="<?php echo htmlspecialchars($cpf); ?>">
+                <?php if (isset($errors['cpf'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['cpf']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group <?php echo isset($errors['phone']) ? 'error' : ''; ?>">
+                <label for="phone" class="form-label">
+                    <span class="label-icon">📱</span>
+                    Telefone
+                </label>
+                <input type="tel" id="phone" name="phone" required class="form-input"
+                       value="<?php echo htmlspecialchars($telefone); ?>">
+                <?php if (isset($errors['phone'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['phone']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="celular" class="form-label">
+                    <span class="label-icon">📱</span>
+                    Celular (Opcional)
+                </label>
+                <input type="tel" id="celular" name="celular" class="form-input"
+                       value="<?php echo htmlspecialchars($celular); ?>">
+                </div>
+
+            <div class="form-group <?php echo isset($errors['password']) ? 'error' : ''; ?>">
+                <label for="password" class="form-label">
+                    <span class="label-icon">🔒</span>
+                    Senha
+                </label>
+                <input type="password" id="password" name="password" required class="form-input">
+                <?php if (isset($errors['password'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['password']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group <?php echo isset($errors['confirm-password']) ? 'error' : ''; ?>">
+                <label for="confirm-password" class="form-label">
+                    <span class="label-icon">🔒</span>
+                    Confirmar Senha
+                </label>
+                <input type="password" id="confirm-password" name="confirm-password" required class="form-input">
+                <?php if (isset($errors['confirm-password'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['confirm-password']); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group full-width <?php echo isset($errors['endereco']) ? 'error' : ''; ?>">
+                <label for="endereco" class="form-label">
+                    <span class="label-icon">🏠</span>
+                    Endereço Completo
+                </label>
+                <input type="text" id="endereco" name="endereco" required class="form-input"
+                       value="<?php echo htmlspecialchars($endereco); ?>">
+                <?php if (isset($errors['endereco'])): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($errors['endereco']); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary large full-width">
+                <span class="btn-text">Criar Conta</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+
+        <div class="auth-footer">
+            <p>Já tem uma conta? <a href="login.html" class="auth-link">Faça login</a></p>
+        </div>
+    </form>
+</body>
+</html>

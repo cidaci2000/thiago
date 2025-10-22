@@ -1,0 +1,288 @@
+// Sistema de Carros
+class CarsSystem {
+    constructor() {
+        this.cars = [];
+        this.filteredCars = [];
+        this.init();
+    }
+
+    async init() {
+        await this.loadCars();
+        this.setupEventListeners();
+        this.displayCars(this.cars);
+    }
+
+    async loadCars() {
+        const spinner = document.getElementById('loading-spinner');
+        spinner.classList.add('show');
+
+        try {
+            // Simular carregamento de dados
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Dados de exemplo (substituir por API real)
+            this.cars = [
+                {
+                    id: 1,
+                    name: "Tesla Model S Plaid",
+                    category: "esportivo",
+                    price: 450,
+                    image: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400",
+                    details: {
+                        seats: "5 lugares",
+                        autonomy: "837 km",
+                        acceleration: "2.1s 0-100km/h",
+                        power: "1,020 hp"
+                    },
+                    features: ["Piloto Automático", "100% Elétrico", "Tela 17\"", "Ludicrous Mode"],
+                    badge: "TOP SPEED"
+                },
+                {
+                    id: 2,
+                    name: "Audi e-tron GT",
+                    category: "luxo",
+                    price: 380,
+                    image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=400",
+                    details: {
+                        seats: "4 lugares",
+                        autonomy: "488 km",
+                        acceleration: "3.3s 0-100km/h",
+                        power: "590 hp"
+                    },
+                    features: ["Quattro", "Carregamento Rápido", "Interior Premium", "Teto Solar"],
+                    badge: "LUXO"
+                },
+                {
+                    id: 3,
+                    name: "Porsche Taycan Turbo",
+                    category: "esportivo",
+                    price: 520,
+                    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400",
+                    details: {
+                        seats: "4 lugares",
+                        autonomy: "412 km",
+                        acceleration: "2.8s 0-100km/h",
+                        power: "680 hp"
+                    },
+                    features: ["Overboost", "PDK", "Porsche 4D", "Sport Chrono"],
+                    badge: "TURBO"
+                },
+                {
+                    id: 4,
+                    name: "Rivian R1S",
+                    category: "suv",
+                    price: 320,
+                    image: "https://images.unsplash.com/photo-1628191136681-d34e22b9cdcf?w=400",
+                    details: {
+                        seats: "7 lugares",
+                        autonomy: "508 km",
+                        acceleration: "3.0s 0-100km/h",
+                        power: "835 hp"
+                    },
+                    features: ["Off-road", "7 Lugares", "Tank Turn", "Armazenamento"],
+                    badge: "ADVENTURE"
+                },
+                {
+                    id: 5,
+                    name: "BMW i4",
+                    category: "luxo",
+                    price: 280,
+                    image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?w=400",
+                    details: {
+                        seats: "5 lugares",
+                        autonomy: "590 km",
+                        acceleration: "3.9s 0-100km/h",
+                        power: "536 hp"
+                    },
+                    features: ["iDrive 8", "BMW Curved", "M Sport", "Head-up Display"],
+                    badge: "TECNOLOGIA"
+                },
+                {
+                    id: 6,
+                    name: "Ford Mustang Mach-E",
+                    category: "suv",
+                    price: 220,
+                    image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?w=400",
+                    details: {
+                        seats: "5 lugares",
+                        autonomy: "483 km",
+                        acceleration: "3.5s 0-100km/h",
+                        power: "480 hp"
+                    },
+                    features: ["GT Performance", "BlueCruise", "Frunk", "SYNC 4A"],
+                    badge: "GT"
+                }
+            ];
+
+            this.filteredCars = [...this.cars];
+            spinner.classList.remove('show');
+
+        } catch (error) {
+            console.error('Erro ao carregar carros:', error);
+            spinner.classList.remove('show');
+            Utils.showNotification('Erro ao carregar frota. Tente novamente.', 'error');
+        }
+    }
+
+    setupEventListeners() {
+        // Filtros
+        document.getElementById('category-filter').addEventListener('change', this.applyFilters.bind(this));
+        document.getElementById('price-filter').addEventListener('change', this.applyFilters.bind(this));
+        document.getElementById('tech-filter').addEventListener('change', this.applyFilters.bind(this));
+        
+        // Busca
+        document.getElementById('search-btn').addEventListener('click', this.applyFilters.bind(this));
+        document.getElementById('search-input').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') this.applyFilters();
+        });
+    }
+
+    applyFilters() {
+        const category = document.getElementById('category-filter').value;
+        const price = document.getElementById('price-filter').value;
+        const tech = document.getElementById('tech-filter').value;
+        const search = document.getElementById('search-input').value.toLowerCase();
+
+        this.filteredCars = this.cars.filter(car => {
+            // Filtro de categoria
+            if (category !== 'all' && car.category !== category) return false;
+
+            // Filtro de preço
+            if (price !== 'all') {
+                const [min, max] = price === '300+' ? [300, Infinity] : price.split('-').map(Number);
+                if (car.price < min || car.price > max) return false;
+            }
+
+            // Filtro de tecnologia
+            if (tech !== 'all') {
+                const hasTech = car.features.some(feature => 
+                    feature.toLowerCase().includes(tech)
+                );
+                if (!hasTech) return false;
+            }
+
+            // Filtro de busca
+            if (search && !car.name.toLowerCase().includes(search)) return false;
+
+            return true;
+        });
+
+        this.displayCars(this.filteredCars);
+    }
+
+    displayCars(cars) {
+        const grid = document.getElementById('cars-grid');
+        
+        if (cars.length === 0) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">🔍</div>
+                    <h3>Nenhum carro encontrado</h3>
+                    <p>Tente ajustar os filtros ou termos de busca</p>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = cars.map(car => `
+            <div class="car-card" data-id="${car.id}">
+                <div class="car-image">
+                    <img src="${car.image}" alt="${car.name}" onerror="this.src='https://via.placeholder.com/400x200/1a1a2e/00d4ff?text=${encodeURIComponent(car.name)}'">
+                    <div class="car-badge">${car.badge}</div>
+                </div>
+                
+                <div class="car-content">
+                    <div class="car-header">
+                        <h3 class="car-name">${car.name}</h3>
+                        <div class="car-price">R$ ${car.price}/dia</div>
+                    </div>
+                    
+                    <div class="car-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">💺</span>
+                            <span>${car.details.seats}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🔋</span>
+                            <span>${car.details.autonomy}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⚡</span>
+                            <span>${car.details.acceleration}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🐎</span>
+                            <span>${car.details.power}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="car-features">
+                        ${car.features.map(feature => `
+                            <span class="feature-tag">${feature}</span>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="car-actions">
+                        <button class="btn-details" onclick="carsSystem.showCarDetails(${car.id})">
+                            <span>Detalhes</span>
+                        </button>
+                        <button class="btn-rent" onclick="carsSystem.rentCar(${car.id})">
+                            <span>Alugar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    showCarDetails(carId) {
+        const car = this.cars.find(c => c.id === carId);
+        if (!car) return;
+
+        // Implementar modal de detalhes
+        Utils.showNotification(`Detalhes de ${car.name} em desenvolvimento`, 'info');
+    }
+
+    rentCar(carId) {
+        const car = this.cars.find(c => c.id === carId);
+        if (!car) return;
+
+        // Verificar se usuário está logado
+        const user = localStorage.getItem('borcelle-user');
+        if (!user) {
+            Utils.showNotification('Faça login para alugar um veículo', 'error');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Adicionar ao carrinho
+        this.addToCart(car);
+        Utils.showNotification(`${car.name} adicionado ao carrinho!`, 'success');
+    }
+
+    addToCart(car) {
+        let cart = JSON.parse(localStorage.getItem('borcelle-cart')) || [];
+        
+        const existingItem = cart.find(item => item.id === car.id);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                ...car,
+                quantity: 1,
+                rentalDays: 1
+            });
+        }
+        
+        localStorage.setItem('borcelle-cart', JSON.stringify(cart));
+        
+        // Atualizar contador
+        if (window.updateCartCount) {
+            window.updateCartCount();
+        }
+    }
+}
+
+// Inicializar sistema de carros
+const carsSystem = new CarsSystem();

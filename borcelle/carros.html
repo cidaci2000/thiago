@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa Frota - Borcelle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="carros.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animado -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🚀</div>
+                <span class="logo-text">BOR<span class="logo-accent">CELLE</span></span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Início</a></li>
+                    <li><a href="carros.html" class="nav-link active">Carros</a></li>
+                    <li><a href="sobre.html" class="nav-link">Sobre</a></li>
+                    <li><a href="contato.html" class="nav-link">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="login.html" class="btn-login">
+                    <span class="btn-icon">👤</span>
+                    Login
+                </a>
+                <a href="cadastro.html" class="btn-register">Cadastrar</a>
+                <a href="carrinho.html" class="btn-cart">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Carros -->
+    <section class="cars-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>NOSSA FROTA <span class="accent">FUTURISTA</span></h1>
+                <p>Descubra veículos com tecnologia de ponta, design inovador e performance excepcional</p>
+            </div>
+        </div>
+    </section>
+
+                       <!-- Filtros FIXOS - NÃO ACOMPANHA MAIS -->
+        <!-- Filtros Futuristas -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-header">
+                <div class="filters-title">
+                    <span class="filter-icon">⚡</span>
+                    <h3>FILTROS AVANÇADOS</h3>
+                </div>
+                <div class="filters-stats">
+                    <span id="results-count">12 carros disponíveis</span>
+                </div>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Filtro Categoria -->
+                <div class="filter-group">
+                    <div class="filter-label">
+                        <span class="label-icon">🚗</span>
+                        <label>CATEGORIA</label>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="category-filter" class="filter-select">
+                            <option value="all">Todas as Categorias</option>
+                            <option value="esportivo">🏎️ Esportivos</option>
+                            <option value="luxo">💎 Luxo</option>
+                            <option value="suv">🚙 SUVs</option>
+                            <option value="economico">💰 Econômicos</option>
+                            <option value="hyper">🚀 Hypercar</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+
+                <!-- Filtro Preço -->
+                <div class="filter-group">
+                    <div class="filter-label">
+                        <span class="label-icon">💎</span>
+                        <label>FAIXA DE PREÇO</label>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="price-filter" class="filter-select">
+                            <option value="all">Qualquer Preço</option>
+                            <option value="0-100">💸 Até R$ 100/dia</option>
+                            <option value="100-200">💰 R$ 100 - R$ 200</option>
+                            <option value="200-300">💵 R$ 200 - R$ 300</option>
+                            <option value="300-400">💳 R$ 300 - R$ 400</option>
+                            <option value="400+">🚀 Acima de R$ 400</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+
+                <!-- Filtro Tecnologia -->
+                <div class="filter-group">
+                    <div class="filter-label">
+                        <span class="label-icon">🔬</span>
+                        <label>TECNOLOGIA</label>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="tech-filter" class="filter-select">
+                            <option value="all">Todas Tecnologias</option>
+                            <option value="autonomo">🤖 Piloto Automático</option>
+                            <option value="eletrico">⚡ 100% Elétrico</option>
+                            <option value="voador">🚁 Tecnologia Voadora</option>
+                            <option value="ai">🧠 Inteligência Artificial</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+
+                <!-- Busca Avançada -->
+                <div class="search-group">
+                    <div class="filter-label">
+                        <span class="label-icon">🔍</span>
+                        <label>BUSCA AVANÇADA</label>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Digite o modelo, característica...">
+                        <button id="search-btn" class="search-button">
+                            <span class="search-text">Buscar</span>
+                            <span class="search-icon">🚀</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ações -->
+                <div class="actions-group">
+                    <div class="filter-label">
+                        <span class="label-icon">⚙️</span>
+                        <label>AÇÕES</label>
+                    </div>
+                    <div class="actions-container">
+                        <button id="reset-filters" class="reset-btn">
+                            <span class="reset-icon">🔄</span>
+                            Limpar Filtros
+                        </button>
+                        <div class="sort-group">
+                            <select id="sort-filter" class="sort-select">
+                                <option value="name">📝 Ordem Alfabética</option>
+                                <option value="price-low">💰 Menor Preço</option>
+                                <option value="price-high">💎 Maior Preço</option>
+                                <option value="speed">⚡ Maior Velocidade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="active-filters" id="active-filters">
+                <!-- Filtros ativos aparecerão aqui -->
+            </div>
+        </div>
+    </section>
+            
+        
+    
+
+    <!-- Grid de Carros -->
+    <section class="cars-grid-section">
+        <div class="container">
+            <div class="results-info">
+                <span id="results-count">12 carros encontrados</span>
+                <div class="sort-group">
+                    <label>Ordenar por:</label>
+                    <select id="sort-filter">
+                        <option value="name">Nome A-Z</option>
+                        <option value="price-low">Menor Preço</option>
+                        <option value="price-high">Maior Preço</option>
+                        <option value="speed">Maior Velocidade</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="cars-grid" id="cars-grid">
+                <!-- Carro 1 -->
+                <div class="car-card" data-category="esportivo" data-price="350" data-tech="eletrico autonomo" data-speed="320">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Quantum X-1">
+                        <div class="car-badge">Esportivo</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Quantum X-1</h3>
+                            <div class="car-price">R$ 350<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>320 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>800 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>750 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>2 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">O Quantum X-1 redefine o conceito de supercarro elétrico com design aerodinâmico e tecnologia de ponta.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(1)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(1)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 2 -->
+                <div class="car-card" data-category="luxo" data-price="280" data-tech="eletrico autonomo" data-speed="250">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nexus Voyager">
+                        <div class="car-badge">Luxo</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Nexus Voyager</h3>
+                            <div class="car-price">R$ 280<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>250 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>1000 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>500 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>4 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Conforto máximo e tecnologia autônoma de nível 5 em um sedan de luxo que antecipa o futuro.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(2)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(2)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 3 -->
+                <div class="car-card" data-category="suv" data-price="320" data-tech="eletrico voador" data-speed="280">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Aero-SUV Titan">
+                        <div class="car-badge">SUV</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Aero-SUV Titan</h3>
+                            <div class="car-price">R$ 320<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>280 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>600 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>650 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>5 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">O primeiro SUV com capacidade de voo urbano, combinando versatilidade e tecnologia aérea.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Tecnologia Voadora</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(3)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(3)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 4 -->
+                <div class="car-card" data-category="economico" data-price="90" data-tech="eletrico" data-speed="180">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1563720223485-88482631d2c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Eco-Stream">
+                        <div class="car-badge">Econômico</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Eco-Stream</h3>
+                            <div class="car-price">R$ 90<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>180 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>400 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>150 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>4 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Eficiência energética máxima em um design compacto e inteligente para a cidade do futuro.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(4)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(4)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 5 -->
+                <div class="car-card" data-category="hyper" data-price="550" data-tech="eletrico autonomo ai" data-speed="420">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cyber-Racer GT">
+                        <div class="car-badge">Hypercar</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Cyber-Racer GT</h3>
+                            <div class="car-price">R$ 550<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>420 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>550 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>1200 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>2 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Performance extrema com design cyberpunk e inteligência artificial integrada.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                            <span class="feature-tag">IA Avançada</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(5)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(5)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 6 -->
+                <div class="car-card" data-category="luxo" data-price="380" data-tech="eletrico autonomo" data-speed="240">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Luxury Horizon">
+                        <div class="car-badge">Luxo</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Luxury Horizon</h3>
+                            <div class="car-price">R$ 380<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>240 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>900 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>450 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>4 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">O ápice do luxo automotivo com interior transformável e realidade aumentada.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(6)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(6)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 7 -->
+                <div class="car-card" data-category="suv" data-price="220" data-tech="eletrico" data-speed="200">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Terra-Explorer">
+                        <div class="car-badge">SUV</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Terra-Explorer</h3>
+                            <div class="car-price">R$ 220<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>200 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>700 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>350 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>5 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">SUV elétrico com tração integral e sistema de navegação por satélite quântico.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(7)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(7)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 8 -->
+                <div class="car-card" data-category="economico" data-price="75" data-tech="eletrico autonomo" data-speed="150">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1593941707882-a5bba5331b2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Urban Pulse">
+                        <div class="car-badge">Econômico</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Urban Pulse</h3>
+                            <div class="car-price">R$ 75<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>150 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>350 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>120 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>3 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Compacto inteligente com carregamento por indução e integração completa com smart cities.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(8)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(8)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 9 -->
+                <div class="car-card" data-category="hyper" data-price="680" data-tech="eletrico voador ai" data-speed="450">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1535732820275-9ffd998cac22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nebula Phantom">
+                        <div class="car-badge">Hypercar</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Nebula Phantom</h3>
+                            <div class="car-price">R$ 680<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>450 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>500 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>1500 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>2 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Hypercar com tecnologia de invisibilidade óptica e propulsão por antimatéria.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Tecnologia Voadora</span>
+                            <span class="feature-tag">IA Avançada</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(9)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(9)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 10 -->
+                <div class="car-card" data-category="luxo" data-price="320" data-tech="eletrico autonomo" data-speed="230">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Celestial Cruiser">
+                        <div class="car-badge">Luxo</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Celestial Cruiser</h3>
+                            <div class="car-price">R$ 320<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>230 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>850 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>480 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>4 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">Limusine elétrica com teto solar holográfico e sistema de entretenimento quântico.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Piloto Automático</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(10)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(10)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 11 -->
+                <div class="car-card" data-category="suv" data-price="270" data-tech="eletrico voador" data-speed="260">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Skyline Dominator">
+                        <div class="car-badge">SUV</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Skyline Dominator</h3>
+                            <div class="car-price">R$ 270<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>260 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>650 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>520 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>5 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">SUV voador com capacidade off-road e modo de flutuação para terrenos difíceis.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                            <span class="feature-tag">Tecnologia Voadora</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(11)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(11)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carro 12 -->
+                <div class="car-card" data-category="economico" data-price="65" data-tech="eletrico" data-speed="140">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Metro Z">
+                        <div class="car-badge">Econômico</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name">Metro Z</h3>
+                            <div class="car-price">R$ 65<small>/dia</small></div>
+                        </div>
+                        <div class="car-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⚡</span>
+                                <span>140 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔋</span>
+                                <span>300 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🐎</span>
+                                <span>100 HP</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🚪</span>
+                                <span>3 portas</span>
+                            </div>
+                        </div>
+                        <p class="car-description">O carro perfeito para a cidade, com tamanho compacto e tecnologia de estacionamento automático.</p>
+                        <div class="car-features">
+                            <span class="feature-tag">100% Elétrico</span>
+                        </div>
+                        <div class="car-actions">
+                            <button class="btn-details" onclick="verDetalhes(12)">
+                                <span>👁️ Detalhes</span>
+                            </button>
+                            <button class="btn-rent" onclick="alugarCarro(12)">
+                                <span>🚀 Alugar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">BORCELLE</div>
+                    <p>Revolucionando a mobilidade urbana com tecnologia de ponta e sustentabilidade.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">💼</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="carros.html">Nossa Frota</a></li>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Veículos</h4>
+                    <ul>
+                        <li><a href="carros.html?categoria=esportivo">Esportivos</a></li>
+                        <li><a href="carros.html?categoria=luxo">Luxo</a></li>
+                        <li><a href="carros.html?categoria=suv">SUVs</a></li>
+                        <li><a href="carros.html?categoria=economico">Econômicos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <div class="contact-info">
+                        <p>📧 contato@borcelle.com</p>
+                        <p>📱 (11) 9999-9999</p>
+                        <p>📍 Av. Tecnologia, 123 - São Paulo, SP</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Borcelle. Todos os direitos reservados.</p>
+                <div class="footer-links">
+                    <a href="#">Privacidade</a>
+                    <a href="#">Termos</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="carros.js"></script>
+</body>
+</html>

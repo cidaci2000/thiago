@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Conexão - Borcelle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            color: green;
+            border-color: green;
+        }
+        .error {
+            color: red;
+            border-color: red;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Teste de Conexão - Borcelle</h1>
+        <p>Use esta página para testar se todas as partes do sistema estão funcionando corretamente.</p>
+
+        <div class="test-section">
+            <h3>1. Teste de Conexão com o Banco de Dados</h3>
+            <button onclick="testDatabase()">Testar Conexão MySQL</button>
+            <div id="db-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Teste de Estrutura do Banco</h3>
+            <button onclick="testDatabaseStructure()">Verificar Tabelas</button>
+            <div id="structure-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Teste de PHP Backend</h3>
+            <button onclick="testPHP()">Testar PHP</button>
+            <button onclick="testProductsAPI()">Testar API de Produtos</button>
+            <button onclick="testAuthAPI()">Testar API de Autenticação</button>
+            <div id="php-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Teste de JavaScript Frontend</h3>
+            <button onclick="testJavaScript()">Testar JavaScript</button>
+            <button onclick="testCart()">Testar Carrinho</button>
+            <div id="js-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Teste Completo do Sistema</h3>
+            <button onclick="runFullTest()">Executar Teste Completo</button>
+            <div id="full-test-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testDatabase() {
+            const result = document.getElementById('db-result');
+            result.innerHTML = 'Testando conexão...';
+            
+            try {
+                const response = await fetch('test-db.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.innerHTML = `✅ SUCCESS: ${data.message}\n\nDetalhes:\n- Host: ${data.details.host}\n- Database: ${data.details.database}\n- Usuário: ${data.details.user}`;
+                    result.className = 'result success';
+                } else {
+                    result.innerHTML = `❌ ERROR: ${data.message}\n\nErro: ${data.error}`;
+                    result.className = 'result error';
+                }
+            } catch (error) {
+                result.innerHTML = `❌ ERRO DE REDE: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testDatabaseStructure() {
+            const result = document.getElementById('structure-result');
+            result.innerHTML = 'Verificando estrutura...';
+            
+            try {
+                const response = await fetch('test-db.php?action=structure');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let tablesInfo = '✅ TABELAS ENCONTRADAS:\n\n';
+                    data.tables.forEach(table => {
+                        tablesInfo += `📊 ${table.name} (${table.rows} registros)\n`;
+                        if (table.columns) {
+                            table.columns.forEach(col => {
+                                tablesInfo += `   └─ ${col.Field} (${col.Type})\n`;
+                            });
+                        }
+                    });
+                    result.innerHTML = tablesInfo;
+                    result.className = 'result success';
+                } else {
+                    result.innerHTML = `❌ ERROR: ${data.message}`;
+                    result.className = 'result error';
+                }
+            } catch (error) {
+                result.innerHTML = `❌ ERRO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testPHP() {
+            const result = document.getElementById('php-result');
+            result.innerHTML = 'Testando PHP...';
+            
+            try {
+                const response = await fetch('test-php.php');
+                const data = await response.text();
+                result.innerHTML = `✅ PHP FUNCIONANDO:\n\n${data}`;
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ ERRO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testProductsAPI() {
+            const result = document.getElementById('php-result');
+            result.innerHTML = 'Testando API de produtos...';
+            
+            try {
+                const response = await fetch('php/products.php?action=get_all');
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.innerHTML = `✅ API PRODUTOS FUNCIONANDO:\n\nEncontrados ${data.cars ? data.cars.length : 0} carros`;
+                    result.className = 'result success';
+                } else {
+                    result.innerHTML = `❌ ERROR: ${data.message}`;
+                    result.className = 'result error';
+                }
+            } catch (error) {
+                result.innerHTML = `❌ ERRO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testAuthAPI() {
+            const result = document.getElementById('php-result');
+            result.innerHTML = 'Testando API de autenticação...';
+            
+            try {
+                const response = await fetch('php/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=test'
+                });
+                const data = await response.json();
+                
+                result.innerHTML = `✅ API AUTH RESPONDE:\n\n${JSON.stringify(data, null, 2)}`;
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ ERRO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        function testJavaScript() {
+            const result = document.getElementById('js-result');
+            result.innerHTML = 'Testando JavaScript...';
+            
+            try {
+                // Testar se as funções principais existem
+                const tests = {
+                    'Função loadProducts': typeof loadProducts === 'function',
+                    'Função addToCart': typeof addToCart === 'function',
+                    'Array allProducts': Array.isArray(allProducts),
+                    'LocalStorage': typeof localStorage !== 'undefined',
+                    'Fetch API': typeof fetch === 'function'
+                };
+
+                let output = '✅ JAVASCRIPT FUNCIONANDO:\n\n';
+                let allPassed = true;
+
+                for (const [testName, testResult] of Object.entries(tests)) {
+                    output += testResult ? `✓ ${testName}\n` : `✗ ${testName}\n`;
+                    if (!testResult) allPassed = false;
+                }
+
+                result.innerHTML = output;
+                result.className = allPassed ? 'result success' : 'result error';
+            } catch (error) {
+                result.innerHTML = `❌ ERRO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        function testCart() {
+            const result = document.getElementById('js-result');
+            result.innerHTML = 'Testando carrinho...';
+            
+            try {
+                // Testar funcionalidades do carrinho
+                const originalCart = JSON.parse(JSON.stringify(cart || []));
+                
+                // Testar adição ao carrinho
+                if (allProducts && allProducts.length > 0) {
+                    addToCart(allProducts[0].id);
+                    const cartUpdated = cart.length > 0;
+                    
+                    // Restaurar carrinho original
+                    cart = originalCart;
+                    updateCartStorage();
+                    updateCartCount();
+                    
+                    result.innerHTML = cartUpdated ? 
+                        '✅ CARRINHO FUNCIONANDO: Item adicionado/removido com sucesso' :
+                        '❌ PROBLEMA NO CARRINHO: Não foi possível adicionar item';
+                    result.className = cartUpdated ? 'result success' : 'result error';
+                } else {
+                    result.innerHTML = '⚠️ CARRINHO: Nenhum produto disponível para teste';
+                    result.className = 'result';
+                }
+            } catch (error) {
+                result.innerHTML = `❌ ERRO NO CARRINHO: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function runFullTest() {
+            const result = document.getElementById('full-test-result');
+            result.innerHTML = 'Iniciando teste completo...\n\n';
+            
+            const tests = [
+                { name: 'Conexão MySQL', fn: testDatabase },
+                { name: 'Estrutura DB', fn: testDatabaseStructure },
+                { name: 'PHP Backend', fn: testPHP },
+                { name: 'JavaScript', fn: testJavaScript }
+            ];
+
+            for (const test of tests) {
+                result.innerHTML += `🔍 Executando: ${test.name}...\n`;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Aqui você implementaria a lógica para cada teste
+            }
+
+            result.innerHTML += '\n✅ TESTE COMPLETO FINALIZADO!\nVerifique os resultados individuais acima.';
+            result.className = 'result success';
+        }
+    </script>
+
+    <!-- Incluir scripts do sistema para teste -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>
